@@ -57,8 +57,8 @@ function Home() {
 
         <main className="hero-content">
           <h1 className="headline">
-            Master <span className="highlight">Left-Arm</span><br />
-            Side-Arm Bowling
+            Master <span className="highlight">Spin bowling</span><br />
+            Lefty Throw down specialist.
           </h1>
           <p className="subheadline">
             Transform your game with elite coaching and specialized techniques designed to create unplayable angles and devastating variations.
