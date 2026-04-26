@@ -1,35 +1,24 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Home.css';
 import coachImage from './assets/WhatsApp Image 2026-04-24 at 13.01.23.jpeg';
-import CircularGallery from './CircularGallery';
 
-import img1 from './assets/WhatsApp Image 2026-04-24 at 13.00.56.jpeg';
-import img2 from './assets/WhatsApp Image 2026-04-24 at 13.01.10.jpeg';
-import img3 from './assets/WhatsApp Image 2026-04-24 at 13.01.16 (1).jpeg';
-import img4 from './assets/WhatsApp Image 2026-04-24 at 13.01.16.jpeg';
-import img5 from './assets/WhatsApp Image 2026-04-24 at 13.14.11.jpeg';
-import vid1 from './assets/WhatsApp Video 2026-04-24 at 13.00.55.mp4';
+import p1 from './assets/photo1.jpeg';
+import p2 from './assets/photo2.mp4';
+import p3 from './assets/photo3.jpeg';
+import p4 from './assets/photo4.mp4';
+import p5 from './assets/photo5.jpeg';
+import p6 from './assets/photo6.jpeg';
+import p7 from './assets/photo7.jpeg';
+import p8 from './assets/photo8.jpeg';
+import p9 from './assets/photo9.jpeg';
+import p10 from './assets/photo10.jpeg';
+import p11 from './assets/photo11.mp4';
+import p12 from './assets/photo12.jpeg';
+import p13 from './assets/photo13.jpeg';
+import p14 from './assets/photo14.jpeg';
 
 function Home() {
   const [isMobile, setIsMobile] = useState(false);
-  const galleryRef = useRef(null);
-  const mobileScrollRef = useRef(null);
-
-  const slideNext = () => {
-    if (isMobile && mobileScrollRef.current) {
-      mobileScrollRef.current.scrollBy({ left: window.innerWidth * 0.8, behavior: 'smooth' });
-    } else if (galleryRef.current) {
-      galleryRef.current.next();
-    }
-  };
-
-  const slidePrev = () => {
-    if (isMobile && mobileScrollRef.current) {
-      mobileScrollRef.current.scrollBy({ left: -window.innerWidth * 0.8, behavior: 'smooth' });
-    } else if (galleryRef.current) {
-      galleryRef.current.prev();
-    }
-  };
 
   useEffect(() => {
     const handleResize = () => {
@@ -42,15 +31,6 @@ function Home() {
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
-
-  const galleryItems = [
-    { image: img1, text: 'Training', type: 'image' },
-    { image: img2, text: 'Technique', type: 'image' },
-    { image: img3, text: 'Power', type: 'image' },
-    { image: vid1, text: 'Action', type: 'video' },
-    { image: img4, text: 'Balance', type: 'image' },
-    { image: img5, text: 'Focus', type: 'image' }
-  ];
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
@@ -72,12 +52,10 @@ function Home() {
           <div className="nav-links">
             <a href="#programs">Programs</a>
             <a href="#about">About</a>
-            <a href="#gallery">Gallery</a>
           </div>
         </nav>
 
         <main className="hero-content">
-          <div className="tag">ELITE PERFORMANCE ACADEMY</div>
           <h1 className="headline">
             Master <span className="highlight">Left-Arm</span><br />
             Side-Arm Bowling
@@ -129,43 +107,58 @@ function Home() {
 
       <section id="gallery" className="gallery-section">
         <h2 className="gallery-title">Action & Highlights</h2>
-        
-        <div className="gallery-controls">
-          <button className="gallery-btn prev-btn" onClick={slidePrev}>
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
-          </button>
-          <button className="gallery-btn next-btn" onClick={slideNext}>
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
-          </button>
+        <div className="gallery-container grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="grid gap-4">
+                <div>
+                    <img className="h-auto max-w-full rounded-base" src={p1} alt="" />
+                </div>
+                <div>
+                    <video className="h-auto max-w-full rounded-base" src={p2} autoPlay loop muted playsInline />
+                </div>
+                <div>
+                    <img className="h-auto max-w-full rounded-base" src={p3} alt="" />
+                </div>
+                <div>
+                    <video className="h-auto max-w-full rounded-base" src={p4} autoPlay loop muted playsInline />
+                </div>
+            </div>
+            <div className="grid gap-4">
+                <div>
+                    <img className="h-auto max-w-full rounded-base" src={p5} alt="" />
+                </div>
+                <div>
+                    <img className="h-auto max-w-full rounded-base" src={p6} alt="" />
+                </div>
+                <div>
+                    <img className="h-auto max-w-full rounded-base" src={p7} alt="" />
+                </div>
+                <div>
+                    <img className="h-auto max-w-full rounded-base" src={p8} alt="" />
+                </div>
+            </div>
+            <div className="grid gap-4">
+                <div>
+                    <img className="h-auto max-w-full rounded-base" src={p9} alt="" />
+                </div>
+                <div>
+                    <img className="h-auto max-w-full rounded-base" src={p10} alt="" />
+                </div>
+                <div>
+                    <video className="h-auto max-w-full rounded-base" src={p11} autoPlay loop muted playsInline />
+                </div>
+            </div>
+            <div className="grid gap-4">
+                <div>
+                    <img className="h-auto max-w-full rounded-base" src={p12} alt="" />
+                </div>
+                <div>
+                    <img className="h-auto max-w-full rounded-base" src={p13} alt="" />
+                </div>
+                <div>
+                    <img className="h-auto max-w-full rounded-base" src={p14} alt="" />
+                </div>
+            </div>
         </div>
-
-        {isMobile ? (
-          <div className="mobile-carousel" ref={mobileScrollRef}>
-            {galleryItems.map((item, idx) => (
-              <div key={idx} className="mobile-carousel-item">
-                {item.type === 'video' ? (
-                  <video src={item.image} autoPlay loop muted playsInline className="mobile-carousel-media" />
-                ) : (
-                  <img src={item.image} alt={item.text} className="mobile-carousel-media" />
-                )}
-                <div className="mobile-carousel-text">{item.text}</div>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <div style={{ height: '600px', position: 'relative' }}>
-            <CircularGallery
-              ref={galleryRef}
-              items={galleryItems} 
-              bend={3} 
-              textColor="#ffffff" 
-              borderRadius={0.05} 
-              scrollSpeed={0.05}
-              autoScrollSpeed={0.02}
-              scrollEase={0.05} 
-            />
-          </div>
-        )}
       </section>
 
       <section id="contact" className="contact-section">
