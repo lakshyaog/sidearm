@@ -1,24 +1,40 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './Home.css';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import coachImage from './assets/WhatsApp Image 2026-04-24 at 13.01.23.jpeg';
-
+import galleryImage1 from './assets/image.png';
+import galleryImage2 from './assets/image copy.png';
+import galleryImage3 from './assets/WhatsApp Image 2026-04-24 at 13.14.15 (1).jpeg';
+import galleryImage4 from './assets/WhatsApp Image 2026-04-24 at 13.14.15.jpeg';
+import galleryImage5 from './assets/photo10.jpeg';
+import galleryImage6 from './assets/image copy 2.png';
+import galleryImage7 from './assets/image copy 3.png';
+import galleryImage8 from './assets/image copy 4.png';
+import galleryImage9 from './assets/WhatsApp Image 2026-04-24 at 13.01.16.jpeg';
+import galleryImage10 from './assets/WhatsApp Image 2026-04-24 at 13.01.16 (1).jpeg';
+import galleryImage11 from './assets/image copy 6.png';
+import galleryImage12 from './assets/image copy 7.png';
+import galleryImage13 from './assets/image copy 8.png';
 import p1 from './assets/photo1.jpeg';
 import p2 from './assets/photo2.mp4';
 import p3 from './assets/photo3.jpeg';
 import p4 from './assets/photo4.mp4';
 import p5 from './assets/photo5.jpeg';
 import p6 from './assets/photo6.jpeg';
-import p7 from './assets/photo7.jpeg';
 import p8 from './assets/photo8.jpeg';
 import p9 from './assets/photo9.jpeg';
-import p10 from './assets/photo10.jpeg';
 import p11 from './assets/photo11.mp4';
 import p12 from './assets/photo12.jpeg';
 import p13 from './assets/photo13.jpeg';
 import p14 from './assets/photo14.jpeg';
+import newVideo from './assets/WhatsApp Video 2026-06-02 at 22.46.45.mp4';
+
+gsap.registerPlugin(ScrollTrigger);
 
 function Home() {
   const [isMobile, setIsMobile] = useState(false);
+  const galleryRef = useRef(null);
 
   useEffect(() => {
     const handleResize = () => {
@@ -30,6 +46,41 @@ function Home() {
 
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  useEffect(() => {
+    if (galleryRef.current) {
+      const images = Array.from(galleryRef.current.querySelectorAll('.gallery-image'));
+      
+      images.forEach((image) => {
+        gsap.fromTo(
+          image,
+          {
+            opacity: 0,
+            y: 50,
+            scale: 0.9,
+          },
+          {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            duration: 0.6,
+            ease: 'power2.out',
+            scrollTrigger: {
+              trigger: image,
+              start: 'top 90%',
+              end: 'top 20%',
+              toggleActions: 'play none none reverse',
+              once: false,
+            },
+          }
+        );
+      });
+    }
+
+    return () => {
+      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+    };
   }, []);
 
   const handleFormSubmit = (e) => {
@@ -47,15 +98,15 @@ function Home() {
   return (
     <div className="home-container">
       <div className="sticky-hero">
-        <nav className="navbar">
+        <nav className="navbar" role="navigation" aria-label="Main navigation">
           <div className="logo">ELITE CRICKET COACHING</div>
           <div className="nav-links">
-            <a href="#programs">Programs</a>
-            <a href="#about">About</a>
+            <a href="#programs" aria-label="View coaching programs">Programs</a>
+            <a href="#about" aria-label="About Coach Azeem Baig">About</a>
           </div>
         </nav>
 
-        <main className="hero-content">
+        <main className="hero-content" role="main">
           <h1 className="headline">
             Master <span className="highlight">Spin bowling</span><br />
             Lefty Throw down specialist.
@@ -64,12 +115,11 @@ function Home() {
             Transform your game with elite coaching and specialized techniques designed to create unplayable angles and devastating variations.
           </p>
           <div className="cta-group">
-            <button className="btn-primary" onClick={() => window.location.href = 'tel:+919634005747'}>BOOK A SESSION</button>
-            <button className="btn-secondary" onClick={() => document.getElementById('gallery').scrollIntoView({ behavior: 'smooth' })}>VIEW DRILLS</button>
+            <button className="btn-primary" onClick={() => window.location.href = 'tel:+919634005747'} aria-label="Call to book a coaching session">BOOK A SESSION</button>
           </div>
         </main>
 
-        <section className="stats-section">
+        <section className="stats-section" aria-label="Coaching statistics">
           <div className="stat-card">
             <span className="stat-number">100+</span>
             <span className="stat-label">PLAYERS TRAINED</span>
@@ -85,12 +135,12 @@ function Home() {
         </section>
       </div>
 
-      <section id="about" className="about-section">
+      <section id="about" className="about-section" aria-labelledby="about-heading">
         <div className="about-image-container">
-          <img src={coachImage} alt="Coach Azeem Baig" className="about-image" />
+          <img src={coachImage} alt="Coach Azeem Baig - Professional Cricket Coach and Ranji Trophy Player" className="about-image" loading="eager" width="600" height="800" />
         </div>
         <div className="about-content">
-          <h2 className="about-title">Coach Azeem Baig</h2>
+          <h2 id="about-heading" className="about-title">Coach Azeem Baig</h2>
           <div className="about-description">
             <p>
               With enhanced coaching experience and a background as a shortlisted Ranji Trophy player, Azeem Baig has established himself as a highly effective cricket trainer and Sidearm Specialist.
@@ -105,65 +155,225 @@ function Home() {
         </div>
       </section>
 
-      <section id="gallery" className="gallery-section">
+      <section id="gallery" className="gallery-section" aria-label="Cricket training gallery">
         <h2 className="gallery-title">Action & Highlights</h2>
-        <div className="gallery-container grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div className="grid gap-4">
-                <div>
-                    <img className="h-auto max-w-full rounded-base" src={p1} alt="" />
-                </div>
-                <div>
-                    <video className="h-auto max-w-full rounded-base" src={p2} autoPlay loop muted playsInline />
-                </div>
-                <div>
-                    <img className="h-auto max-w-full rounded-base" src={p3} alt="" />
-                </div>
-                <div>
-                    <video className="h-auto max-w-full rounded-base" src={p4} autoPlay loop muted playsInline />
-                </div>
-            </div>
-            <div className="grid gap-4">
-                <div>
-                    <img className="h-auto max-w-full rounded-base" src={p5} alt="" />
-                </div>
-                <div>
-                    <img className="h-auto max-w-full rounded-base" src={p6} alt="" />
-                </div>
-                <div>
-                    <img className="h-auto max-w-full rounded-base" src={p7} alt="" />
-                </div>
-                <div>
-                    <img className="h-auto max-w-full rounded-base" src={p8} alt="" />
-                </div>
-            </div>
-            <div className="grid gap-4">
-                <div>
-                    <img className="h-auto max-w-full rounded-base" src={p9} alt="" />
-                </div>
-                <div>
-                    <img className="h-auto max-w-full rounded-base" src={p10} alt="" />
-                </div>
-                <div>
-                    <video className="h-auto max-w-full rounded-base" src={p11} autoPlay loop muted playsInline />
-                </div>
-            </div>
-            <div className="grid gap-4">
-                <div>
-                    <img className="h-auto max-w-full rounded-base" src={p12} alt="" />
-                </div>
-                <div>
-                    <img className="h-auto max-w-full rounded-base" src={p13} alt="" />
-                </div>
-                <div>
-                    <img className="h-auto max-w-full rounded-base" src={p14} alt="" />
-                </div>
-            </div>
+        <div className="gallery-container" ref={galleryRef} role="region" aria-label="Training session photos">
+          <div className="gallery-grid">
+            <video 
+              className="gallery-image" 
+              src={p4} 
+              autoPlay 
+              loop 
+              muted 
+              playsInline
+              loading="lazy"
+              aria-label="Cricket batting technique video"
+            />
+            <video 
+              className="gallery-image" 
+              src={p2} 
+              autoPlay 
+              loop 
+              muted 
+              playsInline
+              loading="lazy"
+              aria-label="Cricket coaching video demonstration"
+            />
+            <video 
+              className="gallery-image" 
+              src={newVideo} 
+              autoPlay 
+              loop 
+              muted 
+              playsInline
+              loading="lazy"
+              aria-label="Cricket training video highlights"
+            />
+            <img 
+              className="gallery-image" 
+              src={p13} 
+              alt="Cricket match preparation training" 
+              loading="lazy"
+              width="400"
+              height="300"
+            />
+            <img 
+              className="gallery-image" 
+              src={galleryImage1} 
+              alt="Elite cricket coaching - Spin bowling training session" 
+              loading="lazy"
+              width="400"
+              height="300"
+            />
+            <img 
+              className="gallery-image" 
+              src={galleryImage6} 
+              alt="Elite cricket coaching drills and exercises" 
+              loading="lazy"
+              width="400"
+              height="300"
+            />
+            <img 
+              className="gallery-image" 
+              src={p9} 
+              alt="Cricket fitness and conditioning training" 
+              loading="lazy"
+              width="400"
+              height="300"
+            />
+            <img 
+              className="gallery-image" 
+              src={galleryImage9} 
+              alt="Cricket academy training highlights" 
+              loading="lazy"
+              width="400"
+              height="300"
+            />
+            <img 
+              className="gallery-image" 
+              src={galleryImage7} 
+              alt="Cricket training session with Coach Azeem Baig" 
+              loading="lazy"
+              width="400"
+              height="300"
+            />
+            <img 
+              className="gallery-image" 
+              src={galleryImage3} 
+              alt="Professional cricket training at academy" 
+              loading="lazy"
+              width="400"
+              height="300"
+            />
+            <img 
+              className="gallery-image" 
+              src={galleryImage4} 
+              alt="Lefty throw down specialist cricket coaching" 
+              loading="lazy"
+              width="400"
+              height="300"
+            />
+            <img 
+              className="gallery-image" 
+              src={galleryImage5} 
+              alt="Cricket spin bowling technique demonstration" 
+              loading="lazy"
+              width="400"
+              height="300"
+            />
+            <img 
+              className="gallery-image" 
+              src={galleryImage8} 
+              alt="Professional cricket batting stance training" 
+              loading="lazy"
+              width="400"
+              height="300"
+            />
+            <img 
+              className="gallery-image" 
+              src={galleryImage10} 
+              alt="Spin bowling variations and techniques" 
+              loading="lazy"
+              width="400"
+              height="300"
+            />
+            <img 
+              className="gallery-image" 
+              src={galleryImage11} 
+              alt="Cricket sidearm training equipment demonstration" 
+              loading="lazy"
+              width="400"
+              height="300"
+            />
+            <img 
+              className="gallery-image" 
+              src={galleryImage12} 
+              alt="Elite cricket coaching program session" 
+              loading="lazy"
+              width="400"
+              height="300"
+            />
+            <img 
+              className="gallery-image" 
+              src={galleryImage13} 
+              alt="Professional cricket player training action shot" 
+              loading="lazy"
+              width="400"
+              height="300"
+            />
+            <img 
+              className="gallery-image" 
+              src={p1} 
+              alt="Cricket training drill demonstration" 
+              loading="lazy"
+              width="400"
+              height="300"
+            />
+            <img 
+              className="gallery-image" 
+              src={p3} 
+              alt="Cricket fielding practice session" 
+              loading="lazy"
+              width="400"
+              height="300"
+            />
+            <img 
+              className="gallery-image" 
+              src={p5} 
+              alt="Cricket bowling action analysis" 
+              loading="lazy"
+              width="400"
+              height="300"
+            />
+            <img 
+              className="gallery-image" 
+              src={p6} 
+              alt="Cricket team practice session" 
+              loading="lazy"
+              width="400"
+              height="300"
+            />
+            <img 
+              className="gallery-image" 
+              src={p8} 
+              alt="Cricket net practice session" 
+              loading="lazy"
+              width="400"
+              height="300"
+            />
+            <video 
+              className="gallery-image" 
+              src={p11} 
+              autoPlay 
+              loop 
+              muted 
+              playsInline
+              loading="lazy"
+              aria-label="Cricket skills training video"
+            />
+            <img 
+              className="gallery-image" 
+              src={p12} 
+              alt="Cricket academy training program" 
+              loading="lazy"
+              width="400"
+              height="300"
+            />
+            <img 
+              className="gallery-image" 
+              src={p14} 
+              alt="Cricket professional coaching session" 
+              loading="lazy"
+              width="400"
+              height="300"
+            />
+          </div>
         </div>
       </section>
 
-      <section id="contact" className="contact-section">
+      <section id="contact" className="contact-section" aria-labelledby="contact-heading">
         <div className="contact-info">
-          <h2 className="contact-title">Start Your Journey</h2>
+          <h2 id="contact-heading" className="contact-title">Start Your Journey</h2>
           <p className="contact-desc">
             Ready to elevate your game? Book a consultation or inquire about our programs today. We respond to all inquiries within 24 hours.
           </p>
