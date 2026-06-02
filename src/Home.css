@@ -9,6 +9,7 @@
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
+  background-repeat: no-repeat;
   color: white;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   position: relative;
@@ -137,6 +138,11 @@
 }
 
 @media (max-width: 768px) {
+  .home-container {
+    background-attachment: scroll;
+    background-position: center center;
+  }
+  
   .navbar {
     padding: 1rem 2rem;
   }
@@ -595,11 +601,13 @@
     padding: 6rem 1.5rem 2rem 1.5rem;
     align-items: center;
     text-align: center;
+    max-width: 100%;
   }
   
   .subheadline {
     margin-bottom: 2rem;
     font-size: 1rem;
+    max-width: 100%;
   }
   
   .stats-section {
