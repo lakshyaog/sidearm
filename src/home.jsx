@@ -49,37 +49,45 @@ function Home() {
   }, []);
 
   useEffect(() => {
-    if (galleryRef.current) {
-      const images = Array.from(galleryRef.current.querySelectorAll('.gallery-image'));
-      
-      images.forEach((image) => {
-        gsap.fromTo(
-          image,
-          {
-            opacity: 0,
-            y: 50,
-            scale: 0.9,
-          },
-          {
-            opacity: 1,
-            y: 0,
-            scale: 1,
-            duration: 0.6,
-            ease: 'power2.out',
-            scrollTrigger: {
-              trigger: image,
-              start: 'top 90%',
-              end: 'top 20%',
-              toggleActions: 'play none none reverse',
-              once: false,
-            },
-          }
-        );
-      });
-    }
+    // Small delay to ensure DOM is fully rendered before applying animations
+    const timer = setTimeout(() => {
+      if (galleryRef.current) {
+        const images = Array.from(galleryRef.current.querySelectorAll('.gallery-image'));
+        
+        images.forEach((image) => {
+          // Mark as GSAP-ready — CSS will hide it, then GSAP animates it back in.
+          // If GSAP never loads, images stay visible (no gsap-ready class = opacity: 1).
+          image.classList.add('gsap-ready');
+
+          gsap.to(
+            image,
+            {
+              opacity: 1,
+              y: 0,
+              scale: 1,
+              duration: 0.6,
+              ease: 'power2.out',
+              scrollTrigger: {
+                trigger: image,
+                start: 'top 95%',
+                end: 'top 20%',
+                toggleActions: 'play none none reverse',
+                once: false,
+              },
+            }
+          );
+        });
+      }
+    }, 100);
 
     return () => {
+      clearTimeout(timer);
       ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+      // Remove gsap-ready class on cleanup so images are visible again
+      if (galleryRef.current) {
+        const images = Array.from(galleryRef.current.querySelectorAll('.gallery-image'));
+        images.forEach((image) => image.classList.remove('gsap-ready'));
+      }
     };
   }, []);
 
