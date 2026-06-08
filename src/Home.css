@@ -139,10 +139,32 @@
 
 @media (max-width: 768px) {
   .home-container {
-    background-attachment: scroll;
-    background-position: center center;
+    /* Remove background image from the container on mobile */
+    background-image: none;
+    background-color: #111827;
+    position: relative;
   }
-  
+
+  /* Use a fixed pseudo-element as the background — works on iOS Safari */
+  .home-container::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: linear-gradient(rgba(17, 24, 39, 0.7), rgba(17, 24, 39, 0.8)), url('./assets/WhatsApp Image 2026-04-24 at 13.01.22.jpeg');
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    z-index: 0;
+  }
+
+  .sticky-hero {
+    position: relative;
+    z-index: 1;
+  }
+
   .navbar {
     padding: 1rem 2rem;
   }
@@ -298,6 +320,13 @@
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
   display: block;
   cursor: pointer;
+  /* Default: visible. GSAP will set inline opacity when it animates. */
+}
+
+/* Applied by JS only after GSAP is confirmed loaded — safe fallback */
+.gallery-image.gsap-ready {
+  opacity: 0;
+  transform: translateY(50px) scale(0.9);
 }
 
 .gallery-image:hover {
@@ -614,6 +643,8 @@
     padding: 0 1.5rem 3rem 1.5rem;
     gap: 1.5rem;
     justify-content: center;
+    position: relative;
+    z-index: 1;
   }
   
   .stat-card {
