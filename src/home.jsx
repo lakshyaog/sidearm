@@ -49,33 +49,29 @@ function Home() {
   }, []);
 
   useEffect(() => {
-    // Small delay to ensure DOM is fully rendered before applying animations
+    // Skip GSAP scroll animations entirely on mobile — they cause visibility issues
+    if (isMobile) return;
+
     const timer = setTimeout(() => {
       if (galleryRef.current) {
         const images = Array.from(galleryRef.current.querySelectorAll('.gallery-image'));
         
         images.forEach((image) => {
-          // Mark as GSAP-ready — CSS will hide it, then GSAP animates it back in.
-          // If GSAP never loads, images stay visible (no gsap-ready class = opacity: 1).
           image.classList.add('gsap-ready');
 
-          gsap.to(
-            image,
-            {
-              opacity: 1,
-              y: 0,
-              scale: 1,
-              duration: 0.6,
-              ease: 'power2.out',
-              scrollTrigger: {
-                trigger: image,
-                start: 'top 95%',
-                end: 'top 20%',
-                toggleActions: 'play none none reverse',
-                once: false,
-              },
-            }
-          );
+          gsap.to(image, {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            duration: 0.6,
+            ease: 'power2.out',
+            scrollTrigger: {
+              trigger: image,
+              start: 'top 95%',
+              end: 'top 20%',
+              toggleActions: 'play none none reverse',
+            },
+          });
         });
       }
     }, 100);
@@ -83,13 +79,15 @@ function Home() {
     return () => {
       clearTimeout(timer);
       ScrollTrigger.getAll().forEach(trigger => trigger.kill());
-      // Remove gsap-ready class on cleanup so images are visible again
       if (galleryRef.current) {
         const images = Array.from(galleryRef.current.querySelectorAll('.gallery-image'));
-        images.forEach((image) => image.classList.remove('gsap-ready'));
+        images.forEach((image) => {
+          image.classList.remove('gsap-ready');
+          gsap.set(image, { clearProps: 'all' });
+        });
       }
     };
-  }, []);
+  }, [isMobile]);
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
@@ -174,7 +172,7 @@ function Home() {
               loop 
               muted 
               playsInline
-              loading="lazy"
+              preload="metadata"
               aria-label="Cricket batting technique video"
             />
             <video 
@@ -184,7 +182,7 @@ function Home() {
               loop 
               muted 
               playsInline
-              loading="lazy"
+              preload="metadata"
               aria-label="Cricket coaching video demonstration"
             />
             <video 
@@ -194,14 +192,13 @@ function Home() {
               loop 
               muted 
               playsInline
-              loading="lazy"
+              preload="metadata"
               aria-label="Cricket training video highlights"
             />
             <img 
               className="gallery-image" 
               src={p13} 
               alt="Cricket match preparation training" 
-              loading="lazy"
               width="400"
               height="300"
             />
@@ -209,7 +206,6 @@ function Home() {
               className="gallery-image" 
               src={galleryImage1} 
               alt="Elite cricket coaching - Spin bowling training session" 
-              loading="lazy"
               width="400"
               height="300"
             />
@@ -217,7 +213,6 @@ function Home() {
               className="gallery-image" 
               src={galleryImage6} 
               alt="Elite cricket coaching drills and exercises" 
-              loading="lazy"
               width="400"
               height="300"
             />
@@ -225,7 +220,6 @@ function Home() {
               className="gallery-image" 
               src={p9} 
               alt="Cricket fitness and conditioning training" 
-              loading="lazy"
               width="400"
               height="300"
             />
@@ -233,7 +227,6 @@ function Home() {
               className="gallery-image" 
               src={galleryImage9} 
               alt="Cricket academy training highlights" 
-              loading="lazy"
               width="400"
               height="300"
             />
@@ -241,7 +234,6 @@ function Home() {
               className="gallery-image" 
               src={galleryImage7} 
               alt="Cricket training session with Coach Azeem Baig" 
-              loading="lazy"
               width="400"
               height="300"
             />
@@ -249,7 +241,6 @@ function Home() {
               className="gallery-image" 
               src={galleryImage3} 
               alt="Professional cricket training at academy" 
-              loading="lazy"
               width="400"
               height="300"
             />
@@ -257,7 +248,6 @@ function Home() {
               className="gallery-image" 
               src={galleryImage4} 
               alt="Lefty throw down specialist cricket coaching" 
-              loading="lazy"
               width="400"
               height="300"
             />
@@ -265,7 +255,6 @@ function Home() {
               className="gallery-image" 
               src={galleryImage5} 
               alt="Cricket spin bowling technique demonstration" 
-              loading="lazy"
               width="400"
               height="300"
             />
@@ -273,7 +262,6 @@ function Home() {
               className="gallery-image" 
               src={galleryImage8} 
               alt="Professional cricket batting stance training" 
-              loading="lazy"
               width="400"
               height="300"
             />
@@ -281,7 +269,6 @@ function Home() {
               className="gallery-image" 
               src={galleryImage10} 
               alt="Spin bowling variations and techniques" 
-              loading="lazy"
               width="400"
               height="300"
             />
@@ -289,7 +276,6 @@ function Home() {
               className="gallery-image" 
               src={galleryImage11} 
               alt="Cricket sidearm training equipment demonstration" 
-              loading="lazy"
               width="400"
               height="300"
             />
@@ -297,7 +283,6 @@ function Home() {
               className="gallery-image" 
               src={galleryImage12} 
               alt="Elite cricket coaching program session" 
-              loading="lazy"
               width="400"
               height="300"
             />
@@ -305,7 +290,6 @@ function Home() {
               className="gallery-image" 
               src={galleryImage13} 
               alt="Professional cricket player training action shot" 
-              loading="lazy"
               width="400"
               height="300"
             />
@@ -313,7 +297,6 @@ function Home() {
               className="gallery-image" 
               src={p1} 
               alt="Cricket training drill demonstration" 
-              loading="lazy"
               width="400"
               height="300"
             />
@@ -321,7 +304,6 @@ function Home() {
               className="gallery-image" 
               src={p3} 
               alt="Cricket fielding practice session" 
-              loading="lazy"
               width="400"
               height="300"
             />
@@ -329,7 +311,6 @@ function Home() {
               className="gallery-image" 
               src={p5} 
               alt="Cricket bowling action analysis" 
-              loading="lazy"
               width="400"
               height="300"
             />
@@ -337,7 +318,6 @@ function Home() {
               className="gallery-image" 
               src={p6} 
               alt="Cricket team practice session" 
-              loading="lazy"
               width="400"
               height="300"
             />
@@ -345,7 +325,6 @@ function Home() {
               className="gallery-image" 
               src={p8} 
               alt="Cricket net practice session" 
-              loading="lazy"
               width="400"
               height="300"
             />
@@ -356,14 +335,13 @@ function Home() {
               loop 
               muted 
               playsInline
-              loading="lazy"
+              preload="metadata"
               aria-label="Cricket skills training video"
             />
             <img 
               className="gallery-image" 
               src={p12} 
               alt="Cricket academy training program" 
-              loading="lazy"
               width="400"
               height="300"
             />
@@ -371,7 +349,6 @@ function Home() {
               className="gallery-image" 
               src={p14} 
               alt="Cricket professional coaching session" 
-              loading="lazy"
               width="400"
               height="300"
             />
