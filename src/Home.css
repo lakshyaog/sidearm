@@ -341,7 +341,7 @@
 
 @media (max-width: 768px) {
   .gallery-container {
-    padding: 0 2rem;
+    padding: 0 1rem;
   }
   
   .gallery-grid {
@@ -349,7 +349,23 @@
   }
   
   .gallery-image {
-    max-height: 250px;
+    max-height: none;
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+  }
+
+  /* Override the desktop last-child centering — column 2 doesn't exist in 1-col layout */
+  .gallery-image:last-child {
+    grid-column: auto;
+  }
+
+  /* Give videos a sensible height on mobile so they're fully visible */
+  video.gallery-image {
+    max-height: 500px;
+    width: 100%;
+    object-fit: contain;
+    background: #000;
   }
 }
 
